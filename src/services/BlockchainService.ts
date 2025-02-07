@@ -17,12 +17,17 @@ export class BlockchainService {
   constructor() {
     // 初始化多个 Solana 连接
     const endpoints = [
-      'https://api.devnet.solana.com',  // Solana Devnet
-      'https://api.testnet.solana.com',  // Solana Testnet
-      'https://solana-api.projectserum.com'  // Project Serum 公共节点
+      // 测试网节点
+      'https://api.devnet.solana.com',    // Solana Devnet
+      'https://api.testnet.solana.com',   // Solana Testnet
+      // 主网节点
+      'https://api.mainnet.solana.com',   // Solana Mainnet
+      'https://solana-mainnet.rpcpool.com',
+      // 备用节点
+      'https://solana-api.projectserum.com'
     ];
 
-    this.solanaConnections = endpoints.map(endpoint => 
+    this.solanaConnections = endpoints.map(endpoint =>
       new Connection(endpoint, 'confirmed')
     );
     this.currentConnectionIndex = 0;
@@ -60,7 +65,7 @@ export class BlockchainService {
       });
 
       // 计算存储使用情况（以 GB 为单位）
-      const storageUsage = supply.total / LAMPORTS_PER_SOL * 0.001; // 估算值
+      const storageUsage = supply.value.total / LAMPORTS_PER_SOL * 0.001; // 估算值
       // 获取最近的交易数量
       const transactionCount = performance[0]?.numTransactions || 0;
 
